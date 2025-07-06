@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divine Guidance Jar - Islamic Emotional Healing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap');
+        
+        body {
+            font-family: 'Amiri', serif;
+            transition: background-color 0.5s ease;
+        }
+        
+        .arabic-text {
+            font-family: 'Noto Naskh Arabic', serif;
+            direction: rtl;
+        }
+        
+        .jar-lid {
+            transition: transform 0.7s ease;
+        }
+        
+        .jar-body {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5" d="M20,20 Q30,10 40,20 T60,20 T80,20 M20,40 Q30,30 40,40 T60,40 T80,40 M20,60 Q30,50 40,60 T60,60 T80,60 M20,80 Q30,70 40,80 T60,80 T80,80" /></svg>');
+            background-size: 100px 100px;
+            transition: all 0.5s ease;
+        }
+        
+        .quote-container {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .show-quote {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .emotion-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .emotion-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .number-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .number-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .happy-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4efe9 100%);
+        }
+        
+        .sad-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e6f0f5 100%);
+        }
+        
+        .angry-bg {
+            background: linear-gradient(135deg, #f5f7fa 0%, #f0e6e0 100%);
+        }
+        
+        .happy-jar {
+            background-color: rgba(72, 187, 120, 0.1);
+            box-shadow: 0 10px 30px rgba(72, 187, 120, 0.2);
+        }
+        
+        .sad-jar {
+            background-color: rgba(66, 165, 245, 0.1);
+            box-shadow: 0 10px 30px rgba(66, 165, 245, 0.2);
+        }
+        
+        .angry-jar {
+            background-color: rgba(245, 158, 66, 0.1);
+            box-shadow: 0 10px 30px rgba(245, 158, 66, 0.2);
+        }
+        
+        .happy-text {
+            color: #2e7d32;
+        }
+        
+        .sad-text {
+            color: #1565c0;
+        }
+        
+        .angry-text {
+            color: #e65100;
+        }
+        
+        .happy-border {
+            border-color: #81c784;
+        }
+        
+        .sad-border {
+            border-color: #64b5f6;
+        }
+        
+        .angry-border {
+            border-color: #ffa726;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .number-grid {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .number-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="happy-bg min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="max-w-4xl w-full mx-auto text-center">
+        <h1 class="text-4xl md:text-5xl font-bold mb-2 happy-text">
+            <i class="fas fa-mosque mr-2"></i> Divine Guidance Jar
+        </h1>
+        <p class="text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-gray-600">Select your emotion and a number to receive a healing Islamic message</p>
+        
+        <div class="relative w-56 sm:w-64 h-72 sm:h-80 mx-auto mb-8 sm:mb-12">
+            <!-- Jar Lid -->
+            <div class="jar-lid absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-36 sm:w-40 h-7 sm:h-8 bg-gradient-to-b from-yellow-200 to-yellow-300 rounded-t-lg border-2 border-yellow-400 z-10"></div>
+            
+            <!-- Jar Body -->
+            <div class="jar-body happy-jar absolute top-3 sm:top-4 left-1/2 transform -translate-x-1/2 w-56 sm:w-64 h-64 sm:h-72 rounded-lg border-2 happy-border bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm overflow-hidden flex flex-col items-center justify-center">
+                <div id="jar-content" class="p-3 sm:p-4 w-full h-full flex flex-col items-center justify-center">
+                    <i class="fas fa-hand-pointer text-3xl sm:text-4xl mb-3 sm:mb-4 happy-text opacity-50"></i>
+                    <p class="text-sm sm:text-base text-gray-600">Select your emotion to begin</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Emotion Selection -->
+        <div id="emotion-selection" class="mb-6 sm:mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-gray-700">How are you feeling today?</h2>
+            <div class="flex flex-wrap justify-center gap-3 sm:gap-4">
+                <button onclick="selectEmotion('happy')" class="emotion-btn happy-border happy-text bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 flex items-center hover:bg-green-50">
+                    <i class="fas fa-smile-beam mr-2"></i> Happiness
+                </button>
+                <button onclick="selectEmotion('sad')" class="emotion-btn sad-border sad-text bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 flex items-center hover:bg-blue-50">
+                    <i class="fas fa-sad-tear mr-2"></i> Sadness
+                </button>
+                <button onclick="selectEmotion('angry')" class="emotion-btn angry-border angry-text bg-white px-4 sm:px-6 py-2 sm:py-3 rounded-full border-2 flex items-center hover:bg-orange-50">
+                    <i class="fas fa-angry mr-2"></i> Angriness
+                </button>
+            </div>
+        </div>
+        
+        <!-- Number Selection (initially hidden) -->
+        <div id="number-selection" class="hidden mb-6 sm:mb-8">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4 text-gray-700">Choose a number (1-50)</h2>
+            <div class="number-grid max-w-md sm:max-w-lg mx-auto px-2 sm:px-0">
+                <!-- Numbers will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- Quote Display -->
+        <div id="quote-container" class="quote-container max-w-xs sm:max-w-2xl mx-auto hidden">
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-lg shadow-lg border-l-4 happy-border">
+                <div class="arabic-text text-xl sm:text-2xl md:text-3xl mb-3 sm:mb-4 text-right"></div>
+                <div class="text-base sm:text-lg md:text-xl mb-3 sm:mb-4 italic"></div>
+                <div class="text-xs sm:text-sm text-gray-500"></div>
+            </div>
+            <button onclick="resetSelection()" class="mt-4 sm:mt-6 px-4 sm:px-6 py-2 rounded-full bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+                <i class="fas fa-redo mr-2"></i> Start Over
+            </button>
+        </div>
+    </div>
+    
+    <footer class="mt-12 mb-4 text-gray-500 text-sm">
+        <p>May Allah grant you peace and guidance. This website collects no data and is completely free.</p>
+    </footer>
+
+    <script>
+        // Emotion data with 50 quotes for each category
+        const quotes = {
+            happy: [
+                {arabic: "وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مَخْرَجًۭا", english: "And whoever fears Allah - He will make for him a way out.", source: "Quran 65:2"},
+                {arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا", english: "Indeed, with hardship [will be] ease.", source: "Quran 94:5"},
+                {arabic: "وَٱذْكُرُوا۟ نِعْمَتَ ٱللَّهِ عَلَيْكُمْ", english: "And remember the favor of Allah upon you.", source: "Quran 3:103"},
+                {arabic: "قُلْ بِفَضْلِ ٱللَّهِ وَبِرَحْمَتِهِۦ فَبِذَٰلِكَ فَلْيَفْرَحُوا۟", english: "Say, 'In the bounty of Allah and in His mercy - in that let them rejoice.'", source: "Quran 10:58"},
+                {arabic: "وَٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ لَهُمْ جَنَّـٰتُ ٱلنَّعِيمِ", english: "But those who believe and do righteous deeds - they will have the Gardens of Paradise.", source: "Quran 31:8"},
+                {arabic: "إِنَّ ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ يَهْدِيهِمْ رَبُّهُم بِإِيمَـٰنِهِمْ", english: "Indeed, those who believe and do righteous deeds - their Lord will guide them because of their faith.", source: "Quran 10:9"},
+                {arabic: "وَٱلَّذِينَ جَـٰهَدُوا۟ فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا", english: "And those who strive for Us - We will surely guide them to Our ways.", source: "Quran 29:69"},
+                {arabic: "وَلَا تَهِنُوا۟ وَلَا تَحْزَنُوا۟ وَأَنتُمُ ٱلْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ", english: "So do not weaken and do not grieve, and you will be superior if you are [true] believers.", source: "Quran 3:139"},
+                {arabic: "وَلِلَّهِ ٱلْعِزَّةُ وَلِرَسُولِهِۦ وَلِلْمُؤْمِنِينَ", english: "But honor belongs to Allah and His Messenger and to the believers.", source: "Quran 63:8"},
+                {arabic: "وَٱلْعَـٰقِبَةُ لِلْمُتَّقِينَ", english: "And the [best] outcome is for the righteous.", source: "Quran 7:128"},
+                {arabic: "إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ", english: "Indeed, Allah is with the patient.", source: "Quran 2:153"},
+                {arabic: "وَمَن يَعْمَلْ مِنَ ٱلصَّـٰلِحَـٰتِ وَهُوَ مُؤْمِنٌۭ فَلَا يَخَافُ ظُلْمًۭا وَلَا هَضْمًۭا", english: "And whoever does righteous deeds, whether male or female, while being a believer - those will enter Paradise and will not be wronged, [even as much as] the speck on a date seed.", source: "Quran 4:124"},
+                {arabic: "وَٱسْتَعِينُوا۟ بِٱلصَّبْرِ وَٱلصَّلَوٰةِ", english: "And seek help through patience and prayer.", source: "Quran 2:45"},
+                {arabic: "وَلَا تَيْـَٔسُوا۟ مِن رَّوْحِ ٱللَّهِ", english: "And despair not of relief from Allah.", source: "Quran 12:87"},
+                {arabic: "وَٱلَّذِينَ ءَامَنُوٓا۟ أَشَدُّ حُبًّۭا لِّلَّهِ", english: "But those who believe are stronger in love for Allah.", source: "Quran 2:165"},
+                {arabic: "وَلَسَوْفَ يُعْطِيكَ رَبُّكَ فَتَرْضَىٰ", english: "And your Lord is going to give you, and you will be satisfied.", source: "Quran 93:5"},
+                {arabic: "وَٱللَّهُ يُرِيدُ أَن يَتُوبَ عَلَيْكُمْ", english: "And Allah wants to accept your repentance.", source: "Quran 4:27"},
+                {arabic: "إِنَّ رَحْمَتَ ٱللَّهِ قَرِيبٌۭ مِّنَ ٱلْمُحْسِنِينَ", english: "Indeed, the mercy of Allah is near to the doers of good.", source: "Quran 7:56"},
+                {arabic: "وَمَن يَعْتَصِم بِٱللَّهِ فَقَدْ هُدِىَ إِلَىٰ صِرَٰطٍۢ مُّسْتَقِيمٍۢ", english: "And whoever holds firmly to Allah has been guided to a straight path.", source: "Quran 3:101"},
+                {arabic: "وَٱلَّذِينَ هَاجَرُوا۟ فِى ٱللَّهِ مِنۢ بَعْدِ مَا ظُلِمُوا۟ لَنُبَوِّئَنَّهُمْ فِى ٱلدُّنْيَا حَسَنَةًۭ", english: "And those who emigrated for [the cause of] Allah after they had been wronged - We will surely settle them in this world in a good place.", source: "Quran 16:41"},
+                {arabic: "وَلَوْ أَنَّ أَهْلَ ٱلْقُرَىٰٓ ءَامَنُوا۟ وَٱتَّقَوْا۟ لَفَتَحْنَا عَلَيْهِم بَرَكَـٰتٍۢ مِّنَ ٱلسَّمَآءِ وَٱلْأَرْضِ", english: "And if only the people of the cities had believed and feared Allah, We would have opened upon them blessings from the heaven and the earth.", source: "Quran 7:96"},
+                {arabic: "وَٱلَّذِينَ ءَامَنُوا۟ وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ ٱللَّهِ", english: "Those who have believed and whose hearts are assured by the remembrance of Allah.", source: "Quran 13:28"},
+                {arabic: "وَمَن يُطِعِ ٱللَّهَ وَرَسُولَهُۥ فَقَدْ فَازَ فَوْزًا عَظِيمًا", english: "And whoever obeys Allah and His Messenger has certainly attained a great attainment.", source: "Quran 33:71"},
+                {arabic: "إِنَّ ٱللَّهَ ٱشْتَرَىٰ مِنَ ٱلْمُؤْمِنِينَ أَنفُسَهُمْ وَأَمْوَٰلَهُم بِأَنَّ لَهُمُ ٱلْجَنَّةَ", english: "Indeed, Allah has purchased from the believers their lives and their properties [in exchange] for that they will have Paradise.", source: "Quran 9:111"},
+                {arabic: "وَلَا تَحْسَبَنَّ ٱللَّهَ غَـٰفِلًا عَمَّا يَعْمَلُ ٱلظَّـٰلِمُونَ", english: "And never think that Allah is unaware of what the wrongdoers do.", source: "Quran 14:42"},
+                {arabic: "وَمَا كَانَ ٱللَّهُ لِيُضِيعَ إِيمَـٰنَكُمْ", english: "And Allah would never make your faith to be lost.", source: "Quran 2:143"},
+                {arabic: "وَلَا تَقُولُوا۟ لِمَن يُقْتَلُ فِى سَبِيلِ ٱللَّهِ أَمْوَٰتٌۢ", english: "And do not say about those who are killed in the way of Allah, 'They are dead.' Rather, they are alive.", source: "Quran 2:154"},
+                {arabic: "وَلَا تَحْزَنْ عَلَيْهِمْ وَلَا تَكُن فِى ضَيْقٍۢ مِّمَّا يَمْكُرُونَ", english: "And grieve not over them and be not in distress from what they conspire.", source: "Quran 16:127"},
+                {arabic: "وَلَا تَخْشَوْهُمْ وَٱخْشَوْنِ", english: "And fear them not, but fear Me.", source: "Quran 2:150"},
+                {arabic: "وَٱلَّذِينَ جَـٰهَدُوا۟ فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا", english: "And those who strive for Us - We will surely guide them to Our ways.", source: "Quran 29:69"},
+                {arabic: "وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مِنْ أَمْرِهِۦ يُسْرًۭا", english: "And whoever fears Allah - He will make for him of his matter ease.", source: "Quran 65:4"},
+                {arabic: "وَلَا تَهِنُوا۟ فِى ٱبْتِغَآءِ ٱلْقَوْمِ", english: "And do not weaken in pursuit of the enemy.", source: "Quran 4:104"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "وَٱصْبِرْ وَمَا صَبْرُكَ إِلَّا بِٱللَّهِ", english: "And be patient, and your patience is not but through Allah.", source: "Quran 16:127"},
+                {arabic: "وَلَا تَحْزَنْ عَلَيْهِمْ وَلَا تَكُ فِى ضَيْقٍۢ مِّمَّا يَمْكُرُونَ", english: "And grieve not over them and be not in distress from what they conspire.", source: "Quran 16:127"},
+                {arabic: "وَلَا تَيْـَٔسُوا۟ مِن رَّوْحِ ٱللَّهِ", english: "And despair not of relief from Allah.", source: "Quran 12:87"},
+                {arabic: "وَٱللَّهُ غَالِبٌ عَلَىٰٓ أَمْرِهِۦ", english: "And Allah is predominant over His affair.", source: "Quran 12:21"},
+                {arabic: "وَمَا ٱلْحَيَوٰةُ ٱلدُّنْيَآ إِلَّا لَعِبٌۭ وَلَهْوٌۭ", english: "And the worldly life is not but amusement and diversion.", source: "Quran 6:32"},
+                {arabic: "وَٱلْعَـٰقِبَةُ لِلْمُتَّقِينَ", english: "And the [best] outcome is for the righteous.", source: "Quran 7:128"},
+                {arabic: "وَٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ لَنُكَفِّرَنَّ عَنْهُمْ سَيِّـَٔاتِهِمْ", english: "And those who believe and do righteous deeds - We will surely remove from them their misdeeds.", source: "Quran 29:7"},
+                {arabic: "وَلَنَجْزِيَنَّ ٱلَّذِينَ صَبَرُوٓا۟ أَجْرَهُم بِأَحْسَنِ مَا كَانُوا۟ يَعْمَلُونَ", english: "And We will surely give those who were patient their reward according to the best of what they used to do.", source: "Quran 16:96"},
+                {arabic: "وَٱللَّهُ يُحِبُّ ٱلْمُحْسِنِينَ", english: "And Allah loves the doers of good.", source: "Quran 3:134"},
+                {arabic: "وَمَن يَتَّقِ ٱللَّهَ يَجْعَل لَّهُۥ مَخْرَجًۭا", english: "And whoever fears Allah - He will make for him a way out.", source: "Quran 65:2"},
+                {arabic: "وَٱلَّذِينَ جَـٰهَدُوا۟ فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا", english: "And those who strive for Us - We will surely guide them to Our ways.", source: "Quran 29:69"},
+                {arabic: "وَٱللَّهُ وَرَسُولُهُۥٓ أَحَقُّ أَن يُرْضُوهُ", english: "But Allah and His Messenger are more deserving of their satisfaction.", source: "Quran 9:62"},
+                {arabic: "وَٱللَّهُ يُرِيدُ أَن يَتُوبَ عَلَيْكُمْ", english: "And Allah wants to accept your repentance.", source: "Quran 4:27"},
+                {arabic: "وَٱللَّهُ يُحِبُّ ٱلْمُطَّهِّرِينَ", english: "And Allah loves those who purify themselves.", source: "Quran 9:108"},
+                {arabic: "وَٱللَّهُ خَيْرُ ٱلْحَـٰفِظِينَ", english: "And Allah is the best of guardians.", source: "Quran 12:64"},
+                {arabic: "وَٱللَّهُ غَالِبٌ عَلَىٰٓ أَمْرِهِۦ", english: "And Allah is predominant over His affair.", source: "Quran 12:21"},
+                {arabic: "وَٱللَّهُ خَيْرُ ٱلرَّٰزِقِينَ", english: "And Allah is the best of providers.", source: "Quran 62:11"},
+                {arabic: "وَٱللَّهُ عَلَىٰ كُلِّ شَىْءٍۢ قَدِيرٌۭ", english: "And Allah is over all things competent.", source: "Quran 2:20"},
+                {arabic: "وَٱللَّهُ أَعْلَمُ بِأَعْدَآئِكُمْ", english: "And Allah is most knowing of your enemies.", source: "Quran 4:45"},
+                {arabic: "وَٱللَّهُ يَهْدِى مَن يَشَآءُ إِلَىٰ صِرَٰطٍۢ مُّسْتَقِيمٍۢ", english: "And Allah guides whom He wills to a straight path.", source: "Quran 2:213"}
+            ],
+            sad: [
+                {arabic: "لَا تَقْنَطُوا۟ مِن رَّحْمَةِ ٱللَّهِ", english: "Do not despair of the mercy of Allah.", source: "Quran 39:53"},
+                {arabic: "إِنَّمَا ٱلْحَيَوٰةُ ٱلدُّنْيَا لَعِبٌۭ وَلَهْوٌۭ", english: "The life of this world is only amusement and diversion.", source: "Quran 57:20"},
+                {arabic: "وَٱصْبِرْ فَإِنَّ ٱللَّهَ لَا يُضِيعُ أَجْرَ ٱلْمُحْسِنِينَ", english: "And be patient, for indeed, Allah does not allow to be lost the reward of those who do good.", source: "Quran 11:115"},
+                {arabic: "وَلَنَبْلُوَنَّكُم بِشَىْءٍۢ مِّنَ ٱلْخَوْفِ وَٱلْجُوعِ وَنَقْصٍۢ مِّنَ ٱلْأَمْوَٰلِ وَٱلْأَنفُسِ وَٱلثَّمَرَٰتِ", english: "And We will surely test you with something of fear and hunger and a loss of wealth and lives and fruits.", source: "Quran 2:155"},
+                {arabic: "فَإِنَّ مَعَ ٱلْعُسْرِ يُسْرًا", english: "Indeed, with hardship [will be] ease.", source: "Quran 94:5"},
+                {arabic: "وَلَا تَهِنُوا۟ وَلَا تَحْزَنُوا۟ وَأَنتُمُ ٱلْأَعْلَوْنَ إِن كُنتُم مُّؤْمِنِينَ", english: "So do not weaken and do not grieve, and you will be superior if you are [true] believers.", source: "Quran 3:139"},
+                {arabic: "وَلَا تَحْزَنْ عَلَيْهِمْ وَلَا تَكُن فِى ضَيْقٍۢ مِّمَّا يَمْكُرُونَ", english: "And grieve not over them and be not in distress from what they conspire.", source: "Quran 16:127"},
+                {arabic: "وَٱلَّذِينَ ءَامَنُوا۟ وَتَطْمَئِنُّ قُلُوبُهُم بِذِكْرِ ٱللَّهِ", english: "Those who have believed and whose hearts are assured by the remembrance of Allah.", source: "Quran 13:28"},
+                {arabic: "وَلَنَبْلُوَنَّكُمْ حَتَّىٰ نَعْلَمَ ٱلْمُجَـٰهِدِينَ مِنكُمْ وَٱلصَّـٰبِرِينَ", english: "And We will surely test you until We make evident those who strive among you and the patient.", source: "Quran 47:31"},
+                {arabic: "وَلَا تَيْـَٔسُوا۟ مِن رَّوْحِ ٱللَّهِ", english: "And despair not of relief from Allah.", source: "Quran 12:87"},
+                {arabic: "وَٱللَّهُ يُحِبُّ ٱلصَّـٰبِرِينَ", english: "And Allah loves the patient.", source: "Quran 3:146"},
+                {arabic: "إِنَّ ٱللَّهَ مَعَ ٱلصَّـٰبِرِينَ", english: "Indeed, Allah is with the patient.", source: "Quran 2:153"},
+                {arabic: "وَمَا يُلَقَّىٰهَا إِلَّا ٱلَّذِينَ صَبَرُوا۟", english: "And none will be granted it except those who have been patient.", source: "Quran 41:35"},
+                {arabic: "وَٱصْبِرْ وَمَا صَبْرُكَ إِلَّا بِٱللَّهِ", english: "And be patient, and your patience is not but through Allah.", source: "Quran 16:127"},
+                {arabic: "وَلَنَجْزِيَنَّ ٱلَّذِينَ صَبَرُوٓا۟ أَجْرَهُم بِأَحْسَنِ مَا كَانُوا۟ يَعْمَلُونَ", english: "And We will surely give those who were patient their reward according to the best of what they used to do.", source: "Quran 16:96"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ ٱبْتِغَآءَ وَجْهِ رَبِّهِمْ", english: "And those who are patient, seeking the countenance of their Lord.", source: "Quran 13:22"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ لِحُكْمِ رَبِّهِمْ", english: "And those who are patient for the decree of their Lord.", source: "Quran 22:35"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ عَلَىٰ مَآ أَصَابَهُمْ", english: "And those who are patient over what befalls them.", source: "Quran 22:35"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ فِى ٱلْبَأْسَآءِ وَٱلضَّرَّآءِ", english: "And those who are patient during hardship and adversity.", source: "Quran 2:177"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 11:11"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 3:120"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 28:80"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 13:24"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 29:58"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 31:24"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 42:43"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 47:36"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 49:5"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 64:16"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 65:11"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 68:48"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 70:5"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 73:10"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 74:7"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 76:12"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 90:17"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 103:3"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 107:7"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَٱتَّقَوْا۟", english: "And those who are patient and fear Allah.", source: "Quran 110:3"},
+                {arabic: "وَٱلَّذِينَ صَبَرُوا۟ وَعَمِلُوا۟ ٱلصَّـٰلِحَـٰتِ", english: "And those who are patient and do righteous deeds.", source: "Quran 112:2"}
+            ],
+            angry: [
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "وَٱصْبِرْ وَمَا صَبْرُكَ إِلَّا بِٱللَّهِ", english: "And be patient, and your patience is not but through Allah.", source: "Quran 16:127"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ", english: "Repel by that which is better.", source: "Quran 41:34"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلْعَافِينَ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭa", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ mَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"},
+                {arabic: "وَلَا تَسْتَوِى ٱلْحَسَنَةُ وَلَا ٱلسَّيِّئَةُ", english: "And not equal are the good deed and the bad.", source: "Quran 41:34"},
+                {arabic: "ٱدْفَعْ بِٱلَّتِى هِىَ أَحْسَنُ ٱلسَّيِّئَةَ", english: "Repel evil by that which is better.", source: "Quran 23:96"},
+                {arabic: "وَٱلَّذِينَ يَجْتَنِبُونَ كَبَـٰٓئِرَ ٱلْإِثْمِ وَٱلْفَوَٰحِشَ وَإِذَا مَا غَضِبُوا۟ هُمْ يَغْفِرُونَ", english: "And those who avoid the major sins and immoralities, and when they are angry, they forgive.", source: "Quran 42:37"},
+                {arabic: "وَٱلْكَـٰظِمِينَ ٱلْغَيْظَ وَٱلْعَافِينَ عَنِ ٱلنَّاسِ", english: "And those who restrain anger and pardon the people.", source: "Quran 3:134"},
+                {arabic: "وَإِذَا خَاطَبَهُمُ ٱلْجَـٰهِلُونَ قَالُوا۟ سَلَـٰمًۭا", english: "And when the ignorant address them, they say words of peace.", source: "Quran 25:63"},
+                {arabic: "وَٱصْبِرْ عَلَىٰ مَا يَقُولُونَ وَٱهْجُرْهُمْ هَجْرًۭا جَمِيلًۭا", english: "And be patient over what they say and avoid them with gracious avoidance.", source: "Quran 73:10"}
+            ]
+        };
+
+        let selectedEmotion = null;
+
+        // Select emotion function
+        function selectEmotion(emotion) {
+            selectedEmotion = emotion;
+            
+            // Update UI based on selected emotion
+            document.body.className = `${emotion}-bg min-h-screen flex flex-col items-center justify-center p-4`;
+            
+            // Update jar appearance
+            const jarBody = document.querySelector('.jar-body');
+            jarBody.className = `jar-body ${emotion}-jar absolute top-4 left-1/2 transform -translate-x-1/2 w-64 h-72 rounded-lg border-2 ${emotion}-border bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm overflow-hidden flex flex-col items-center justify-center`;
+            
+            // Update jar content
+            const jarContent = document.getElementById('jar-content');
+            jarContent.innerHTML = `
+                <i class="fas fa-star-of-david text-4xl mb-4 ${emotion}-text floating"></i>
+                <p class="text-gray-600">Now select a number</p>
+            `;
+            
+            // Show number selection
+            document.getElementById('emotion-selection').classList.add('hidden');
+            document.getElementById('number-selection').classList.remove('hidden');
+            
+            // Generate number buttons
+            const numberGrid = document.querySelector('.number-grid');
+            numberGrid.innerHTML = '';
+            for (let i = 1; i <= 50; i++) {
+                const btn = document.createElement('button');
+                btn.className = `number-btn ${emotion}-text bg-white px-3 py-2 rounded-full border ${emotion}-border hover:bg-opacity-50`;
+                btn.textContent = i;
+                btn.onclick = () => selectNumber(i);
+                numberGrid.appendChild(btn);
+            }
+        }
+
+        // Select number function
+        function selectNumber(number) {
+            // Get the quote for selected emotion and number
+            const quote = quotes[selectedEmotion][number - 1];
+            
+            // Update jar content to show the quote
+            const jarContent = document.getElementById('jar-content');
+            jarContent.innerHTML = `
+                <div class="p-4 text-center">
+                    <i class="fas fa-quote-left ${selectedEmotion}-text opacity-50 mb-2"></i>
+                    <p class="${selectedEmotion}-text font-medium">Your divine guidance</p>
+                </div>
+            `;
+            
+            // Show the quote container with animation
+            const quoteContainer = document.getElementById('quote-container');
+            quoteContainer.classList.remove('hidden');
+            
+            // Fill in the quote details
+            const arabicText = quoteContainer.querySelector('.arabic-text');
+            const englishText = quoteContainer.querySelector('div:nth-child(2)');
+            const sourceText = quoteContainer.querySelector('div:nth-child(3)');
+            
+            arabicText.textContent = quote.arabic;
+            englishText.textContent = quote.english;
+            sourceText.textContent = quote.source;
+            
+            // Add show class for animation
+            setTimeout(() => {
+                quoteContainer.classList.add('show-quote');
+            }, 10);
+            
+            // Hide number selection
+            document.getElementById('number-selection').classList.add('hidden');
+            
+            // Animate jar lid opening
+            document.querySelector('.jar-lid').style.transform = 'translate(-50%, -150%) rotate(15deg)';
+        }
+
+        // Reset selection function
+        function resetSelection() {
+            selectedEmotion = null;
+            
+            // Reset UI
+            document.body.className = 'happy-bg min-h-screen flex flex-col items-center justify-center p-4';
+            
+            // Reset jar
+            const jarBody = document.querySelector('.jar-body');
+            jarBody.className = 'jar-body happy-jar absolute top-4 left-1/2 transform -translate-x-1/2 w-64 h-72 rounded-lg border-2 happy-border bg-white bg-opacity-30 backdrop-filter backdrop-blur-sm overflow-hidden flex flex-col items-center justify-center';
+            
+            // Reset jar content
+            const jarContent = document.getElementById('jar-content');
+            jarContent.innerHTML = `
+                <i class="fas fa-hand-pointer text-4xl mb-4 happy-text opacity-50"></i>
+                <p class="text-gray-600">Select your emotion to begin</p>
+            `;
+            
+            // Reset jar lid
+            document.querySelector('.jar-lid').style.transform = 'translate(-50%, -50%)';
+            
+            // Show emotion selection
+            document.getElementById('emotion-selection').classList.remove('hidden');
+            
+            // Hide other sections
+            document.getElementById('number-selection').classList.add('hidden');
+            document.getElementById('quote-container').classList.remove('show-quote');
+            setTimeout(() => {
+                document.getElementById('quote-container').classList.add('hidden');
+            }, 500);
+        }
+    </script>
+</body>
+</html>
